@@ -25,4 +25,4 @@ class Pad: #for writing controller inputs
         self.pipe.write('RELEASE {}\n'.format(button))
 
     def set_stick(self, x, y): #sets gcn stick to corresponding MKW input
-        self.pipe.write('SET MAIN {} {}'.format(INPUT_MAP[x], INPUT_MAP[y]))
+        self.pipe.write('SET MAIN {} {}\n'.format(INPUT_MAP[x], INPUT_MAP[y]))
