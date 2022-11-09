@@ -1,4 +1,5 @@
-#basic test for showing x and y input
+#To be used in Felk's Dolphin scripting branch.
+#Currently, this program just displays inputs.
 
 from dolphin import gui, event, memory, controller
 
