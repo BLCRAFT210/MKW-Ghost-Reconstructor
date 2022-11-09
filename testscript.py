@@ -1,6 +1,6 @@
 #basic test for showing x and y input
 
-from dolphin import gui, event, memory, savestate
+from dolphin import gui, event, memory, controller
 
 white = 0xffffffff
 black = 0xff000000
@@ -13,10 +13,32 @@ def pointer_chase(address, *chase_offsets):
 
 while True:
     await event.frameadvance()
-    gui.draw_rect_filled((8, 10), (120, 40), black)
+    currentInputs = controller.get_gc_buttons(0)
+    gui.draw_rect_filled((8, 10), (120, 75), black)
 
     x_input = memory.read_u8(pointer_chase(0x809BD730, 0xC, 0x0, 0x48, 0x38))
-    gui.draw_text((10, 10), white, f"X Input: {x_input}")
+    gui.draw_text((10, 10), white, f'X Input: {x_input}')
 
     y_input = memory.read_u8(pointer_chase(0x809BD730, 0xC, 0x0, 0x48, 0x39))
-    gui.draw_text((10, 20), white, f"Y Input: {y_input}")
+    gui.draw_text((10, 20), white, f'Y Input: {y_input}')
+
+    if currentInputs['A']:
+        gui.draw_text((10, 30), white, 'A')
+
+    if currentInputs['B']:
+        gui.draw_text((10, 40), white, 'B')
+
+    if currentInputs['L']:
+        gui.draw_text((10, 50), white, 'Shroom')
+    
+    dpad = []
+    if currentInputs['Left']:
+        dpad.append('Left')
+    if currentInputs['Right']:
+        dpad.append('Right')
+    if currentInputs['Down']:
+        dpad.append('Down')
+    if currentInputs['Up']:
+        dpad.append('Up')    
+
+    gui.draw_text((10, 60), white, ', '.join(dpad))
