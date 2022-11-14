@@ -15,7 +15,7 @@ def pointer_chase(address, *chase_offsets):
 while True:
     await event.frameadvance()
     currentInputs = controller.get_gc_buttons(0)
-    gui.draw_rect_filled((8, 10), (120, 75), black)
+    gui.draw_rect_filled((8, 10), (120, 95), black)
 
     x_input = memory.read_u8(pointer_chase(0x809BD730, 0xC, 0x0, 0x48, 0x38))
     gui.draw_text((10, 10), white, f'X Input: {x_input}')
@@ -43,3 +43,8 @@ while True:
         dpad.append('Up')    
 
     gui.draw_text((10, 60), white, ', '.join(dpad))
+
+    wheelieparam1 = memory.read_u32(pointer_chase(0x809C18F8, 0xC, 0x10, 0x0, 0x10, 0x10, 0x2B6))
+    wheelieparam2 = memory.read_u32(pointer_chase(0x809C18F8, 0xC, 0x10, 0x0, 0x10, 0x10, 0x2A8))
+    gui.draw_text((10, 70), white, f'WP 1: {wheelieparam1}')
+    gui.draw_text((10, 80), white, f'WP 2: {wheelieparam2}')
