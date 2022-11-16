@@ -1,5 +1,5 @@
 #To be used in Felk's Dolphin scripting branch.
-#Currently, this program just displays inputs.
+#The two questionable params are likely not of utility for our purposes.
 
 from dolphin import gui, event, memory, controller
 
@@ -15,7 +15,7 @@ def pointer_chase(address, *chase_offsets):
 while True:
     await event.frameadvance()
     currentInputs = controller.get_gc_buttons(0)
-    gui.draw_rect_filled((8, 10), (120, 95), black)
+    gui.draw_rect_filled((8, 10), (180, 145), black)
 
     x_input = memory.read_u8(pointer_chase(0x809BD730, 0xC, 0x0, 0x48, 0x38))
     gui.draw_text((10, 10), white, f'X Input: {x_input}')
@@ -40,11 +40,26 @@ while True:
     if currentInputs['Down']:
         dpad.append('Down')
     if currentInputs['Up']:
-        dpad.append('Up')    
+        dpad.append('Up')
 
     gui.draw_text((10, 60), white, ', '.join(dpad))
 
-    wheelieparam1 = memory.read_u32(pointer_chase(0x809C18F8, 0xC, 0x10, 0x0, 0x10, 0x10, 0x2B6))
-    wheelieparam2 = memory.read_u32(pointer_chase(0x809C18F8, 0xC, 0x10, 0x0, 0x10, 0x10, 0x2A8))
-    gui.draw_text((10, 70), white, f'WP 1: {wheelieparam1}')
-    gui.draw_text((10, 80), white, f'WP 2: {wheelieparam2}')
+    questionableparam1 = memory.read_u32(pointer_chase(0x809C18F8, 0xC, 0x10, 0x0, 0x10, 0x10, 0x2B6))
+    questionableparam2 = memory.read_u32(pointer_chase(0x809C18F8, 0xC, 0x10, 0x0, 0x10, 0x10, 0x2A8))
+    gui.draw_text((10, 80), white, f'QP 2: {questionableparam2}')
+    gui.draw_text((10, 70), white, f'QP 1: {questionableparam1}')
+
+    trickable = bool(memory.read_u32(pointer_chase(0x809C18F8, 0xC, 0x10, 0x0, 0x10, 0x1C, 0x8)) & 0x40000000)
+    gui.draw_text((10, 90), white, f'Trickable: {trickable}')
+
+    drifting = bool(memory.read_u32(pointer_chase(0x809C18F8, 0xC, 0x10, 0x0, 0x10, 0x1C, 0x4)) & 0x8)
+    gui.draw_text((10, 100), white, f'Drifting: {drifting}')
+
+    grounded = bool(memory.read_u32(pointer_chase(0x809C18F8, 0xC, 0x10, 0x0, 0x10, 0x1C, 0x4)) & 0x40000)
+    gui.draw_text((10, 110), white, f'Grounded: {grounded}')
+
+    inwheelie = bool(memory.read_u32(pointer_chase(0x809C18F8, 0xC, 0x10, 0x0, 0x10, 0x1C, 0x4)) & 0x20000000)
+    gui.draw_text((10, 120), white, f'In Wheelie: {inwheelie}')
+
+    trickabletimer = memory.read_u16(pointer_chase(0x809C18F8, 0xC, 0x10, 0x0, 0x10, 0x1C, 0xA6))
+    gui.draw_text((10, 130), white, f'Trickable timer: {trickabletimer}')
