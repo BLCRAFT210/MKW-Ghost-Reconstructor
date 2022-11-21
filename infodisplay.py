@@ -15,7 +15,7 @@ def pointer_chase(address, *chase_offsets):
 while True:
     await event.frameadvance()
     currentInputs = controller.get_gc_buttons(0)
-    gui.draw_rect_filled((8, 10), (180, 145), black)
+    gui.draw_rect_filled((8, 10), (180, 155), black)
 
     x_input = memory.read_u8(pointer_chase(0x809BD730, 0xC, 0x0, 0x48, 0x38))
     gui.draw_text((10, 10), white, f'X Input: {x_input}')
@@ -63,3 +63,6 @@ while True:
 
     trickabletimer = memory.read_u16(pointer_chase(0x809C18F8, 0xC, 0x10, 0x0, 0x10, 0x1C, 0xA6))
     gui.draw_text((10, 130), white, f'Trickable timer: {trickabletimer}')
+
+    speed = memory.read_f32(pointer_chase(0x809C18F8, 0xC, 0x10, 0x0, 0x10, 0x10, 0x20))
+    gui.draw_text((10, 140), white, f'Speed: {speed}')
